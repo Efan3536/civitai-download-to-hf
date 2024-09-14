@@ -42,24 +42,3 @@ python cd_plus https://example.com/model.ckpt your_hf_token your_civitai_api_key
 
 * 确保你已经安装了所需的 Python 库.
 * `cd_plus` 方法需要你拥有 Hugging Face 和 Civitai 的账户并获取相应的 API 密钥.
-```
-
-**其他信息:**
-
-* [如何获取 Hugging Face Token](https://huggingface.co/settings/tokens)
-* [如何获取 Civitai API Key](https://civitai.com/apikeys)
-
-希望以上信息能够帮助你理解如何使用这个工具. 
-
-
-```
-
-**修改说明:**
-
-1.  将使用方法分为了两种，并分别给出了代码示例.
-2.  添加了参数说明，解释了每个参数的含义.
-3.  添加了获取 Hugging Face Token 和 Civitai API Key 的链接.
-4.  使用 Markdown 格式进行排版，使其更易于阅读.
-
-
-请根据你的实际情况修改以上内容，例如添加更多使用方法、参数说明、示例等.
