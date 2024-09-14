@@ -170,15 +170,23 @@ def upload_to_huggingface(model_name, download_dir, repo_id, repo_type, hf_token
 
 # --- 拉取 HTML 网页代码 ---
 
-def download_html(model_url, file_name, download_dir):
-    """下载 Civitai 模型页面的 HTML 代码。
+def download_html(model_url, file_name, download_dir, api_key):
+    """下载 Civitai 模型页面的 HTML 代码，处理 NSFW 模型和版本信息。
 
     Args:
         model_url (str): Civitai 模型地址。
         file_name (str): 保存的文件名。
         download_dir (str): 下载目录。
+        api_key (str): Civitai API 密钥。
     """
     try:
+        # 添加 API 密钥到模型地址末尾
+        if "token=" not in model_url:
+            if "?" in model_url:
+                model_url += f"&token={api_key}"
+            else:
+                model_url += f"?token={api_key}"
+
         response = requests.get(model_url)
         response.raise_for_status()
 
@@ -273,7 +281,7 @@ if __name__ == "__main__":
                 )
 
         # 下载 HTML 网页代码
-        download_html(model_url, f"{file_name_base}.html", download_dir)
+        download_html(model_url, f"{file_name_base}.html", download_dir, api_key)
 
         # 上传到 Hugging Face Hub
         upload_to_huggingface(file_name_base, download_dir, repo_id, repo_type, hf_token)
