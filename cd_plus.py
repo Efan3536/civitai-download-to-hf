@@ -40,8 +40,8 @@ def get_civitai_model_info_by_url(model_url, api_key):
             "model_name": data["name"],
             "model_description": data["description"],  # 使用BeautifulSoup还原HTML格式
             "model_url": f"https://civitai.com/models/{data['id']}",
-            "model_type": data["type"],
-            "model_tags": data["tags"],
+            "model_type": data["type"]，
+            "model_tags": data["tags"]，
             "download_link": None,  # 初始化为 None，稍后更新
             "preview_image_url": None,  # 初始化为 None，稍后更新
             "model_version_id": None,
@@ -50,7 +50,7 @@ def get_civitai_model_info_by_url(model_url, api_key):
         }
 
         # 提取模型描述的HTML格式，使用BeautifulSoup
-        soup = BeautifulSoup(model_info["model_description"], 'html.parser')
+        soup = BeautifulSoup(model_info["model_description"]， 'html.parser')
         model_info["model_description"] = soup.prettify()
 
         # 如果提供了 model_version_id，则提取特定版本的信息
