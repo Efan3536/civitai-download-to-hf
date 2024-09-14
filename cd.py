@@ -145,10 +145,16 @@ if __name__ == "__main__":
     model_info = get_civitai_model_info_by_url(model_url, api_key)
 
     if model_info:
-        # 下载模型
-        if model_info.get("download_link"):
+        # 下载模型, 判断是否带有版本信息
+        if model_info.get("model_version_download_link"):  # 优先判断是否有版本下载链接
+            download_url = model_info["model_version_download_link"] + f"?token={api_key}"
+        elif model_info.get("download_link"):  # 如果没有版本下载链接，则使用默认下载链接
             download_url = model_info["download_link"] + f"?token={api_key}"
+        else:
+            print("没有找到模型下载链接！")
+            download_url = None
 
+        if download_url:
             # 获取 Civitai 提供的默认文件名
             response = requests.get(download_url, headers={'Range': 'bytes=0-0'})  # 只请求第一个字节
             response.raise_for_status()
@@ -174,14 +180,22 @@ if __name__ == "__main__":
                 with open(json_file_path, "w", encoding="utf-8") as f:
                     json.dump(model_info, f, ensure_ascii=False, indent=4)
 
-        # 下载图片
-        if model_info.get("preview_image_url"):
+        # 下载图片, 判断是否带有版本信息
+        if model_info.get("model_version_image_url"):  # 优先判断是否有版本图片链接
+            image_url = model_info["model_version_image_url"]
+        elif model_info.get("preview_image_url"):  # 如果没有版本图片链接，则使用默认图片链接
+            image_url = model_info["preview_image_url"]
+        else:
+            print("没有找到模型图片链接！")
+            image_url = None
+            
+        if image_url:
             image_file_path = os.path.join(download_dir, f"{file_name_base}.jpg")
             if os.path.exists(image_file_path):
                 print(f"图片已存在，跳过下载: {image_file_path}")
             else:
                 download_file(
-                    model_info["preview_image_url"],
+                    image_url,
                     f"{file_name_base}.jpg",
                     download_dir=download_dir,
                 )
